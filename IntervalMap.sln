@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntervalMap", "src\Interval
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "src\Core\Core\Core.csproj", "{F2A9CA98-4D71-422A-AA99-472A53937D6C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "tests\Tests\Tests.csproj", "{6E8BF84A-E7F7-4A83-81F2-74BCCB945344}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmarks", "Benchmarks\Benchmarks.csproj", "{BBDE8DE6-A48D-4EDC-B650-ACA730698CEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{F2A9CA98-4D71-422A-AA99-472A53937D6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2A9CA98-4D71-422A-AA99-472A53937D6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2A9CA98-4D71-422A-AA99-472A53937D6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E8BF84A-E7F7-4A83-81F2-74BCCB945344}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E8BF84A-E7F7-4A83-81F2-74BCCB945344}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E8BF84A-E7F7-4A83-81F2-74BCCB945344}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E8BF84A-E7F7-4A83-81F2-74BCCB945344}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBDE8DE6-A48D-4EDC-B650-ACA730698CEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBDE8DE6-A48D-4EDC-B650-ACA730698CEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBDE8DE6-A48D-4EDC-B650-ACA730698CEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBDE8DE6-A48D-4EDC-B650-ACA730698CEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

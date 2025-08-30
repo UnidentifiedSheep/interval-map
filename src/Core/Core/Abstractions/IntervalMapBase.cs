@@ -4,23 +4,20 @@ namespace Core.Abstractions;
 
 public abstract class IntervalMapBase<T>
 {
-    public abstract double MaxValue { get; protected set; }
-    protected const int ScaleFactor = 100; //Множитель для конвертации double с двумя числами после запятой в int. 
-    protected readonly List<T> Intervals = []; //Список доступных интервалов.
+
     /// <summary>
-    /// Проверка на то, что числа имеют больше двух знаков после запятой или меньше.
+    /// Количество знаков после запятой.
     /// </summary>
-    /// <param name="start">Начало интервала</param>
-    /// <param name="end">Конец интервала</param>
-    /// <returns>True если у числа меньше или ровно 2 знака после запятой, в ином случае false</returns>
-    protected static bool CheckAfterComa(double start, double end) => CheckAfterComa(start) && CheckAfterComa(end);
-    /// <summary>
-    /// Проверка на то, что число имеет больше двух знаков после запятой или меньше.
-    /// </summary>
-    /// <param name="value">Число для проверки</param>
-    /// <returns>True если у числа меньше или ровно 2 знака после запятой, в ином случае false </returns>
-    protected static bool CheckAfterComa(double value) => (value * 100) % 1 == 0;
-    protected static int Scale(double value) => (int)(value * ScaleFactor);
+    public int MaxValue { get; protected set; }
+    public byte SignsAfterComma { get; protected init; }
+    public int PageSize { get; protected init; }
+    public int ScaleFactor { get; protected init; }
+    
+    protected int Scale(double value) => (int)(value * ScaleFactor);
+    protected double DeScale(int value) => ((double)value / ScaleFactor);
+    protected int GetPageIndex(int value) => value / PageSize;
+    protected int GetPositionInPage(int value) => value % PageSize;
+    
 
     /// <summary>
     /// Добавить интервал в карту.

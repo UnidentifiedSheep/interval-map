@@ -1,29 +1,42 @@
-﻿namespace Core.Models;
+﻿using Core.Enums;
+
+namespace Core.Models;
 
 public class Interval<T> where T : class
-{
-    public double Start { get; private set; }
-    public double End { get; private set; }
+{ 
+    public double Start { get; }
+    public double End { get; }
+    public IntervalBoundary StartBoundary { get; }
+    public IntervalBoundary EndBoundary { get; }
     public T? Value { get; private set; }
 
-    public Interval(double start, double end, T? value = null)
+    public Interval(double start, double end, T? value = null, IntervalBoundary startBoundary = IntervalBoundary.Inclusive,
+        IntervalBoundary endBoundary = IntervalBoundary.Inclusive)
     {
         if(start < 0 || end < 0)
-            throw new ArgumentException("Значение интервала не может быть меньше нуля.");
-        if ((Math.Round(start * 100, 4) % 1 != 0) || (Math.Round(end * 100, 4) % 1 != 0))
-            throw new ArgumentException("У числа не должен быть более двух знаков после запятой.");
+            throw new ArgumentException("Interval must be non-negative");
+        if(start > end)
+            throw new ArgumentException("Start must be less or equal to End");
+        if (start.Equals(end) && (startBoundary == IntervalBoundary.Exclusive || endBoundary == IntervalBoundary.Exclusive))
+            throw new ArgumentException("Invalid interval: for a zero-length interval, boundaries must be inclusive.");
+        
         Start = start;
         End = end;
         Value = value;
+        StartBoundary = startBoundary;
+        EndBoundary = endBoundary;
     }
 
-    public bool IsNull() => Value == null;
+    public void ChangeValue(T? value) => Value = value;
+    
+    public bool IsNull => Value == null;
 
     public override bool Equals(object? obj)
     {
-        var other = (Interval?)obj;
-        if(other == null) return false;
-        return Start.Equals(other.Start) && End.Equals(other.End);
+        if (obj is Interval<T> other)
+            return Start.Equals(other.Start) && End.Equals(other.End);
+        
+        return false;
     }
 
     protected bool Equals(Interval other) => Start.Equals(other.Start) && End.Equals(other.End);
@@ -34,23 +47,32 @@ public class Interval<T> where T : class
 }
 public class Interval
 {
-    public double Start { get; private set; }
-    public double End { get; private set; }
-    public Interval(double start, double end)
+    public double Start { get; }
+    public double End { get; }
+    public IntervalBoundary StartBoundary { get; }
+    public IntervalBoundary EndBoundary { get; }
+    public Interval(double start, double end, IntervalBoundary startBoundary = IntervalBoundary.Inclusive,
+        IntervalBoundary endBoundary = IntervalBoundary.Inclusive)
     {
         if(start < 0 || end < 0)
-            throw new ArgumentException("Значение интервала не может быть меньше нуля.");
-        if (((start * 100) % 1 != 0) || (end * 100 % 1 != 0))
-            throw new ArgumentException("У числа не должен быть более двух знаков после запятой.");
+            throw new ArgumentException("Interval must be non-negative");
+        if(start > end)
+            throw new ArgumentException("Start must be less or equal to End");
+        if (start.Equals(end) && (startBoundary == IntervalBoundary.Exclusive || endBoundary == IntervalBoundary.Exclusive))
+            throw new ArgumentException("Invalid interval: for a zero-length interval, boundaries must be inclusive.");
+
         Start = start;
         End = end;
+        StartBoundary = startBoundary;
+        EndBoundary = endBoundary;
     }
 
     public override bool Equals(object? obj)
     {
-        var other = (Interval?)obj;
-        if(other == null) return false;
-        return Start.Equals(other.Start) && End.Equals(other.End);
+        if (obj is Interval other)
+            return Start.Equals(other.Start) && End.Equals(other.End);
+        
+        return false;
     }
 
     protected bool Equals(Interval other)
