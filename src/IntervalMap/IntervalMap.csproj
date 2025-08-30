@@ -4,14 +4,22 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-    </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="AWSSDK.S3" Version="4.0.6.10" />
-    </ItemGroup>
+        <PackageId>IntervalMap</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>Diyar Tasliyan</Authors>
+        <Description>Interval mapping library for .NET</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/UnidentifiedSheep/interval-map</RepositoryUrl>
+        <PackageTags>interval map intervalmap adaptive</PackageTags>
+    </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Core\Core\Core.csproj" />
     </ItemGroup>
+
+    <!--<ItemGroup>
+      <PackageReference Include="IntervalMap.Core" Version="1.0.0" />
+    </ItemGroup>-->
 
 </Project>

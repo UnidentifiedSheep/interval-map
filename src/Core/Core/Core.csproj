@@ -4,6 +4,14 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+
+        <PackageId>IntervalMap.Core</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>Diyar Tasliyan</Authors>
+        <Description>Core of interval mapping library for .NET</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/UnidentifiedSheep/interval-map</RepositoryUrl>
+        <PackageTags>interval map intervalmap adaptive</PackageTags>
     </PropertyGroup>
 
 </Project>
