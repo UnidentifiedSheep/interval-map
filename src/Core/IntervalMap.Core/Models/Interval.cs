@@ -1,6 +1,6 @@
-﻿using Core.Enums;
+﻿using IntervalMap.Core.Enums;
 
-namespace Core.Models;
+namespace IntervalMap.Core.Models;
 
 public class Interval<T> where T : class
 { 

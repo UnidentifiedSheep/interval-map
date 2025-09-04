@@ -1,5 +1,5 @@
-using Core.Abstractions;
-using Core.Models;
+using IntervalMap.Core.Abstractions;
+using IntervalMap.Core.Models;
 
 namespace IntervalMap.Variations;
 

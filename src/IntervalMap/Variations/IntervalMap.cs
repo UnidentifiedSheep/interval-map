@@ -1,7 +1,9 @@
 ﻿using System.Numerics;
-using Core.Abstractions;
-using Core.Enums;
-using Core.Models;
+using IntervalMap.Core.Abstractions;
+using IntervalMap.Core.Enums;
+using IntervalMap.Core.Interfaces;
+using IntervalMap.Core.Models;
+using IntervalMap.Pages;
 
 namespace IntervalMap.Variations;
 
@@ -9,13 +11,13 @@ public class IntervalMap<TValue, TMap> : IntervalMapBase<Interval<TValue>>
     where TValue : class
     where TMap : struct, INumber<TMap>
 {
-    private readonly TMap[]?[] _pages;
+    private readonly IPage<TMap>?[] _pages;
     private readonly int _pageCount;
 
     private readonly Dictionary<TMap, Interval<TValue>> _intervals = new();
     private readonly Dictionary<Interval<TValue>, TMap> _intervalToIndex = new();
 
-    private TMap[]? _lastPage;
+    private IPage<TMap>? _lastPage;
     private int _lastPageIndex = -1;
 
     private readonly TMap _emptyValue = TMap.Zero;
@@ -29,7 +31,7 @@ public class IntervalMap<TValue, TMap> : IntervalMapBase<Interval<TValue>>
         MaxValue = Scale(maxValue)+1;
 
         _pageCount = (int)Math.Ceiling((MaxValue + 1) / (double)PageSize);
-        _pages = new TMap[_pageCount][];
+        _pages = new IPage<TMap>[_pageCount];
     }
 
     public override IntervalMapBase<Interval<TValue>> AddInterval(Interval<TValue> interval)
@@ -98,7 +100,10 @@ public class IntervalMap<TValue, TMap> : IntervalMapBase<Interval<TValue>>
         int pageIdx = GetPageIndex(scaled);
         int pos = GetPositionInPage(scaled);
 
-        return !GetPage(pageIdx)[pos].Equals(_emptyValue);
+        var page = GetPage(pageIdx);
+        if (page == null) return false;
+        
+        return !page.Get(pos).Equals(_emptyValue);
     }
 
     public override Interval<TValue>? GetInterval(double value)
@@ -107,7 +112,10 @@ public class IntervalMap<TValue, TMap> : IntervalMapBase<Interval<TValue>>
         int pageIdx = GetPageIndex(scaled);
         int pos = GetPositionInPage(scaled);
 
-        var stored = GetPage(pageIdx)[pos];
+        var page = GetPage(pageIdx);
+        if (page == null) return null;
+        
+        var stored = page.Get(pos);
         if (stored.Equals(_emptyValue))
             return null;
         
@@ -124,11 +132,11 @@ public class IntervalMap<TValue, TMap> : IntervalMapBase<Interval<TValue>>
         ProcessPages(scaledStart, scaledEnd, (pageIdx, startPos, endPos) =>
         {
             if (exists) return;
-            var page = GetPage(pageIdx);
+            var page = GetPageOrCreate(pageIdx, startPos, endPos);
 
             for (int i = startPos; i < endPos; i++)
             {
-                if (page[i].Equals(_emptyValue)) continue;
+                if (page.Get(i).Equals(_emptyValue)) continue;
                 exists = true;
                 break;
             }
@@ -137,7 +145,12 @@ public class IntervalMap<TValue, TMap> : IntervalMapBase<Interval<TValue>>
         return exists;
     }
 
-    private TMap[] GetPage(int pageIndex)
+    private IPage<TMap>? GetPage(int pageIndex)
+    {
+        return _pages[pageIndex];
+    }
+
+    private IPage<TMap> GetPageOrCreate(int pageIndex, int startPos, int endPos)
     {
         if (pageIndex >= _pageCount)
             throw new ArgumentOutOfRangeException(nameof(pageIndex), "Page index out of range");
@@ -145,7 +158,7 @@ public class IntervalMap<TValue, TMap> : IntervalMapBase<Interval<TValue>>
         if (pageIndex == _lastPageIndex)
             return _lastPage!;
 
-        var page = _pages[pageIndex] ?? CreatePage(pageIndex);
+        var page = GetPage(pageIndex) ?? CreatePage(pageIndex, startPos, endPos);
 
         _lastPage = page;
         _lastPageIndex = pageIndex;
@@ -154,17 +167,17 @@ public class IntervalMap<TValue, TMap> : IntervalMapBase<Interval<TValue>>
 
     private void FillPage(int pageIndex, int startPos, int endPos, TMap storedIndex)
     {
-        var page = _pages[pageIndex] ?? CreatePage(pageIndex);
+        var page = GetPageOrCreate(pageIndex, startPos, endPos);
         for (int i = startPos; i < endPos; i++)
-            page[i] = storedIndex;
+            page.Set(i, storedIndex);
     }
 
     private void ClearPage(int pageIndex, int startPos, int endPos, TMap storedIndex)
     {
-        var page = _pages[pageIndex] ?? CreatePage(pageIndex);
+        var page = GetPageOrCreate(pageIndex, startPos, endPos);
         for (int i = startPos; i < endPos; i++)
-            if (page[i].Equals(storedIndex))
-                page[i] = _emptyValue;
+            if (page.Get(i).Equals(storedIndex))
+                page.Set(i, _emptyValue);
     }
 
     private void ProcessPages(int scaledStart, int scaledEnd, Action<int, int, int> action)
@@ -188,9 +201,14 @@ public class IntervalMap<TValue, TMap> : IntervalMapBase<Interval<TValue>>
         }
     }
 
-    private TMap[] CreatePage(int pageIndex)
+    private IPage<TMap> CreatePage(int pageIndex, int startPos, int endPos)
     {
-        var page = new TMap[PageSize];
+        var length = endPos - startPos;
+        var density = (double)length / PageSize;
+
+        IPage<TMap> page = density > 0.5 ? new FastPage<TMap>(PageSize) 
+            : new SparsePage<TMap>();
+
         _pages[pageIndex] = page;
         return page;
     }

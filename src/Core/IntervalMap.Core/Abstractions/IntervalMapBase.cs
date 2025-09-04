@@ -1,6 +1,6 @@
-﻿using Core.Models;
+﻿using IntervalMap.Core.Models;
 
-namespace Core.Abstractions;
+namespace IntervalMap.Core.Abstractions;
 
 public abstract class IntervalMapBase<T>
 {

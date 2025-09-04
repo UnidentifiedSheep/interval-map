@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntervalMap", "src\IntervalMap\IntervalMap.csproj", "{8ABB19AC-0FFD-4023-A01B-6BD05E6DE50E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "src\Core\Core\Core.csproj", "{F2A9CA98-4D71-422A-AA99-472A53937D6C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntervalMap.Core", "src\Core\IntervalMap.Core\IntervalMap.Core.csproj", "{F2A9CA98-4D71-422A-AA99-472A53937D6C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "tests\Tests\Tests.csproj", "{6E8BF84A-E7F7-4A83-81F2-74BCCB945344}"
 EndProject

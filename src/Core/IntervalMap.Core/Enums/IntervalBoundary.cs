@@ -1,4 +1,4 @@
-namespace Core.Enums;
+namespace IntervalMap.Core.Enums;
 
 public enum IntervalBoundary
 {

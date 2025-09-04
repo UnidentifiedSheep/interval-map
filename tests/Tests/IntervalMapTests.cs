@@ -1,5 +1,5 @@
-using Core.Enums;
-using Core.Models;
+using IntervalMap.Core.Enums;
+using IntervalMap.Core.Models;
 using IntervalMap.Variations;
 
 namespace Tests;

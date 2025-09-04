@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
 
         <PackageId>IntervalMap</PackageId>
-        <Version>1.0.0</Version>
+        <Version>1.0.2</Version>
         <Authors>Diyar Tasliyan</Authors>
         <Description>Interval mapping library for .NET</Description>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -15,11 +15,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Core\Core\Core.csproj" />
+      <ProjectReference Include="..\Core\IntervalMap.Core\IntervalMap.Core.csproj" />
     </ItemGroup>
 
-    <!--<ItemGroup>
-      <PackageReference Include="IntervalMap.Core" Version="1.0.0" />
-    </ItemGroup>-->
-
+    <ItemGroup>
+        <PackageReference Include="IntervalMap.Core" Version="1.0.1" />
+    </ItemGroup>
 </Project>
