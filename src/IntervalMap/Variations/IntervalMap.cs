@@ -23,12 +23,13 @@ public class IntervalMap<TValue, TMap> : IntervalMapBase<Interval<TValue>>
     private readonly TMap _emptyValue = TMap.Zero;
     private readonly TMap _one = TMap.One;
 
-    public IntervalMap(double maxValue, byte signsAfterComma = 2, int pageSize = 1000)
+    public IntervalMap(double maxValue, byte signsAfterComma = 2, int pageSize = 1000, bool intersectionAllowed = false)
     {
         SignsAfterComma = signsAfterComma;
         ScaleFactor = (int)Math.Pow(10, signsAfterComma);
         PageSize = pageSize;
         MaxValue = Scale(maxValue)+1;
+        IntersectionAllowed = intersectionAllowed;
 
         _pageCount = (int)Math.Ceiling((MaxValue + 1) / (double)PageSize);
         _pages = new IPage<TMap>[_pageCount];
@@ -58,8 +59,9 @@ public class IntervalMap<TValue, TMap> : IntervalMapBase<Interval<TValue>>
                 $"Cannot add interval: current intervals count {_intervals.Count} cannot be represented by {typeof(TMap).Name}.");
         }
 
-        if (IsIntersectionExists(interval))
+        if (!IntersectionAllowed && IsIntersectionExists(interval))
             throw new ArgumentException("Interval cannot intersect other intervals");
+
 
         _intervals[intervalIndex] = interval;
         _intervalToIndex[interval] = intervalIndex;

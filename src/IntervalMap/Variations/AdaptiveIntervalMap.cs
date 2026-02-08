@@ -5,17 +5,16 @@ namespace IntervalMap.Variations;
 
 public class AdaptiveIntervalMap<T> : IntervalMapBase<Interval<T>> where T : class
 {
-    private readonly List<Interval<T>> _intervals = new();
-    private readonly byte _signsAfterComma;
+    private readonly List<Interval<T>> _intervals = [];
     private IntervalMapBase<Interval<T>> _map;
 
-    public AdaptiveIntervalMap(byte signsAfterComma = 2)
+    public AdaptiveIntervalMap(byte signsAfterComma = 2, bool intersectionAllowed = false)
     {
         SignsAfterComma = signsAfterComma;
         ScaleFactor = (int)Math.Pow(10, signsAfterComma);
-        _signsAfterComma = signsAfterComma;
         _map = new IntervalMap<T,byte>(1, signsAfterComma);
         MaxValue = _map.MaxValue;
+        IntersectionAllowed = intersectionAllowed;
     }
     
     public override IntervalMapBase<Interval<T>> AddInterval(Interval<T> interval)
@@ -45,9 +44,9 @@ public class AdaptiveIntervalMap<T> : IntervalMapBase<Interval<T>> where T : cla
     {
         return intervalCount switch
         {
-            < 255  => new IntervalMap<T, byte>(maxValue, _signsAfterComma),
-            < ushort.MaxValue => new IntervalMap<T, ushort>(maxValue, _signsAfterComma),
-            < int.MaxValue => new IntervalMap<T, int>(maxValue, _signsAfterComma),
+            < 255  => new IntervalMap<T, byte>(maxValue, SignsAfterComma, 1000, IntersectionAllowed),
+            < ushort.MaxValue => new IntervalMap<T, ushort>(maxValue, SignsAfterComma, 1000, IntersectionAllowed),
+            < int.MaxValue => new IntervalMap<T, int>(maxValue, SignsAfterComma, 1000, IntersectionAllowed),
             _ => throw new ArgumentOutOfRangeException(nameof(intervalCount),
                 $"Interval map can contain maximum {int.MaxValue}.")
         };

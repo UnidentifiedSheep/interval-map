@@ -4,7 +4,6 @@ namespace IntervalMap.Core.Abstractions;
 
 public abstract class IntervalMapBase<T>
 {
-
     /// <summary>
     /// Количество знаков после запятой.
     /// </summary>
@@ -12,6 +11,7 @@ public abstract class IntervalMapBase<T>
     public byte SignsAfterComma { get; protected init; }
     public int PageSize { get; protected init; }
     public int ScaleFactor { get; protected init; }
+    public bool IntersectionAllowed { get; protected init; } 
     
     protected int Scale(double value) => (int)(value * ScaleFactor);
     protected double DeScale(int value) => ((double)value / ScaleFactor);

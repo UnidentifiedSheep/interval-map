@@ -12,7 +12,7 @@ public class IntervalMapBenchmark
     [GlobalSetup]
     public void SetupArray()
     {
-        IntervalMap<string, int> _map = new IntervalMap<string, int>(10_000_000);
+        _map = new IntervalMap<string, int>(10_000_000);
         GenerateIntervals();
     }
 
