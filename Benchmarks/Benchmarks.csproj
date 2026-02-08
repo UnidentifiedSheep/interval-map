@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\src\Core\Core\Core.csproj" />
+      <ProjectReference Include="..\src\Core\IntervalMap.Core\IntervalMap.Core.csproj" />
       <ProjectReference Include="..\src\IntervalMap\IntervalMap.csproj" />
     </ItemGroup>
 
